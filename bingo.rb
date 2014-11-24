@@ -284,4 +284,29 @@ end
 
 #29. AND BINGO WAS HIS NAME-O!
 
+ # # SORRY
+ # # ----------
+ # board5 = BingoCheckerRefactored.new([[13, 14, 86, 1, 'x'],[33, 88, 25, 'x', 3],[21, 17, 'x', 41, 32],[1, 'x', 26, 73, 36],[1, 60, 6, 10, 42]])
+ # board6 = BingoCheckerRefactored.new([[1, 44, 71, 8, 88],[22, 'x', 75, 65, 73],[83, 85, 'x', 89, 57],[25, 31, 96, 'x', 51],[75, 70, 54, 80, 'x']])
+ # board7 = BingoCheckerRefactored.new([[47, 44, 71, 12, 88],[22, 69, 75, 'x', 73],[83, 85, 97, 'x', 57],[25, 31, 96, 'x', 51],[75, 70, 54, 'x', 83]])
+ # board8 = BingoCheckerRefactored.new( [[47, 44, 71, 8, 88],['x', 'x', 'x', 'x', '31'],[83, 85, 97, 89, 57],[25, 31, 96, 68, 51],[75, 70, 54, 80, 83]])
+ # puts "Should see 4 SORRY!"
+ #  board5.check_board
+ #  board6.check_board
+ #  board7.check_board
+ #  board8.check_board
+
+ #  # BINGO!
+ #  # ----------
+ # board1 = BingoCheckerRefactored.new([[13, 14, 86, 1, 'x'],[33, 88, 25, 'x', 3],[21, 17, 'x', 41, 32],[1, 'x', 26, 73, 36],['x', 60, 6, 10, 42]]) 
+ # board2 = BingoCheckerRefactored.new([['x', 44, 71, 8, 88],[22, 'x', 75, 65, 73],[83, 85, 'x', 89, 57],[25, 31, 96, 'x', 51],[75, 70, 54, 80, 'x']])
+ # board3 = BingoCheckerRefactored.new( [[47, 44, 71, 8, 88],['x', 'x', 'x', 'x', 'x'],[83, 85, 97, 89, 57],[25, 31, 96, 68, 51],[75, 70, 54, 80, 83]])
+ # board4 = BingoCheckerRefactored.new([[47, 44, 71, 'x', 88],[22, 69, 75, 'x', 73],[83, 85, 97, 'x', 57],[25, 31, 96, 'x', 51],[75, 70, 54, 'x', 83]])
+ # puts "Should see 4 BINGO!"
+ #  board1.check_board
+ #  board2.check_board
+ #  board3.check_board
+ #  board4.check_board
+
+ #30. AND BINGO WAS HIS NAME-O
  
