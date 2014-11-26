@@ -1,34 +1,61 @@
 class BingoCheckerFinal
-	
+	attr_writer :board
+
+	# Creates an instance from the given 2D array of integers.
+	# param {Array} 2d array of integers
 	def initialize (board)
 		@board = board
-		@key = Array.new(board.length, 'x')
+		@win_config = Array.new(board.length, "X")
+		# This Array notation is particularly good because
+		# @win_config[0].equal?(@win_config[1])
 	end
 
-	def check_board
-		 in_row? || in_column? || in_descending_diagonal? || in_ascending_diagonal? ? (puts "BINGO!") : (puts "SORRY!")
-	end
-	
-	private
+	def is_won?
+		 # This is very subtle, but you can curb performance by taking advantage of
+		 # short-circuitry by assuming the chances of winning in different
+		 # ways are equal.
 
-	attr_reader :board, :key
-
-	def in_row?
-		board.any? {|row| row == key}
+		 # This is my guess... Benchmark is the way to go.
+		 has_winning_row? || has_winning_descending_diagonal? || \ # The expression can be escaped for better read.
+		 has_winning_ascending_diagonal? || has_winning_column?
 	end
 
-	def in_column?
-		board.transpose.any? {|column| column == key}
+	def has_winning_row?
+		board.any? do |row|
+			row == @winning_config
+		end
 	end
 
-	def in_descending_diagonal?
-		board.each_with_index.map {|row, index| row[index]} == key
+	def has_winning_column?
+		board.transpose.any? do |column|
+			column == @winning_config
+		end
 	end
-			
-	def in_ascending_diagonal?
-		board.each_with_index.map {|row, index| row[-1 - index]} == key
+
+	def has_winning_descending_diagonal?
+		# X - -
+		# - X -
+		# - - X
+		diagonal = board.each_with_index.map do |row, index|
+			row[index]
+		end
+
+		# I would keep this last comparison seperate because it's a very important
+		# distinction. The previous step is just "data-plumbing"
+		# so that we can ultimately make this verdit below.
+		diagonal == @winning_config
 	end
-	
+
+	def has_winning_ascending_diagonal?
+		# - - X
+		# - X -
+		# X - -
+		diagonal = board.each_with_index.map do |row, index|
+			row[-1 - index]
+		end
+
+		diagonal == @winning_config
+	end
 end
 
 #***************************************** NOTE *****************************************
@@ -36,9 +63,9 @@ end
 #                                      Follow along!                                    #
 #****************************************************************************************
 
-=begin 
+=begin
 Given a bingo board , I want check for a BINGO and print "BINGO!" on success else "SORRY!"
- 
+
 1. Create the class
 
  class BingoChecker
@@ -47,9 +74,9 @@ Given a bingo board , I want check for a BINGO and print "BINGO!" on success els
  	end
  end
 
-2. There are four lines of x's that can return us a BINGO!: column, row, and each diagonal; 
+2. There are four lines of x's that can return us a BINGO!: column, row, and each diagonal;
 	a. For each of these directions, lets make an individual method that returns true or false if it found a bingo
-	b. If any of these cases are true we have get a "BINGO!" else "SORRY!". 
+	b. If any of these cases are true we have get a "BINGO!" else "SORRY!".
 3. Let's create our end-game method, following our above logic
 
  def check_board
@@ -97,7 +124,7 @@ Given a bingo board , I want check for a BINGO and print "BINGO!" on success els
  				return true
  			end
  		end
- 		false		
+ 		false
  end
 
  col_test_1 = BingoChecker.new([[47, 44, 71, 'x', 88],[22, 69, 75, 'x', 73],[83, 85, 97, 'x', 57],[25, 31, 96, 'x', 51],[75, 70, 54, 'x', 83]])
@@ -156,7 +183,7 @@ Given a bingo board , I want check for a BINGO and print "BINGO!" on success els
 
   BINGO!
   ----------
- board1 = BingoChecker.new([[13, 14, 86, 1, 'x'],[33, 88, 25, 'x', 3],[21, 17, 'x', 41, 32],[1, 'x', 26, 73, 36],['x', 60, 6, 10, 42]]) 
+ board1 = BingoChecker.new([[13, 14, 86, 1, 'x'],[33, 88, 25, 'x', 3],[21, 17, 'x', 41, 32],[1, 'x', 26, 73, 36],['x', 60, 6, 10, 42]])
  board2 = BingoChecker.new([['x', 44, 71, 8, 88],[22, 'x', 75, 65, 73],[83, 85, 'x', 89, 57],[25, 31, 96, 'x', 51],[75, 70, 54, 80, 'x']])
  board3 = BingoChecker.new( [[47, 44, 71, 8, 88],['x', 'x', 'x', 'x', 'x'],[83, 85, 97, 89, 57],[25, 31, 96, 68, 51],[75, 70, 54, 80, 83]])
  board4 = BingoChecker.new([[47, 44, 71, 'x', 88],[22, 69, 75, 'x', 73],[83, 85, 97, 'x', 57],[25, 31, 96, 'x', 51],[75, 70, 54, 'x', 83]])
@@ -170,7 +197,7 @@ Given a bingo board , I want check for a BINGO and print "BINGO!" on success els
 
 #18. Our final product
 class BingoChecker
-	
+
 	def initialize(board)
  		@board = board
  		@key = ['x','x','x','x','x']
@@ -199,7 +226,7 @@ class BingoChecker
  				return true
  			end
  		end
- 		false		
+ 		false
  	end
 
 	def in_descending_diagonal?
@@ -250,7 +277,7 @@ end
 #28. Final Product
 
 class BingoCheckerRefactored
-	
+
 	def initialize (board)
 		@board = board
 		@key = Array.new(board.length, 'x')
@@ -259,7 +286,7 @@ class BingoCheckerRefactored
 	def check_board
 		 in_row? || in_column? || in_descending_diagonal? || in_ascending_diagonal? ? (puts "BINGO!") : (puts "SORRY!")
 	end
-	
+
 	private
 
 	attr_reader :board, :key
@@ -275,11 +302,11 @@ class BingoCheckerRefactored
 	def in_descending_diagonal?
 		board.each_with_index.map {|row, index| row[index]} == key
 	end
-			
+
 	def in_ascending_diagonal?
 		board.each_with_index.map {|row, index| row[-1 - index]} == key
 	end
-	
+
 end
 
 #29. AND BINGO WAS HIS NAME-O!
@@ -298,7 +325,7 @@ end
 
  #  # BINGO!
  #  # ----------
- # board1 = BingoCheckerRefactored.new([[13, 14, 86, 1, 'x'],[33, 88, 25, 'x', 3],[21, 17, 'x', 41, 32],[1, 'x', 26, 73, 36],['x', 60, 6, 10, 42]]) 
+ # board1 = BingoCheckerRefactored.new([[13, 14, 86, 1, 'x'],[33, 88, 25, 'x', 3],[21, 17, 'x', 41, 32],[1, 'x', 26, 73, 36],['x', 60, 6, 10, 42]])
  # board2 = BingoCheckerRefactored.new([['x', 44, 71, 8, 88],[22, 'x', 75, 65, 73],[83, 85, 'x', 89, 57],[25, 31, 96, 'x', 51],[75, 70, 54, 80, 'x']])
  # board3 = BingoCheckerRefactored.new( [[47, 44, 71, 8, 88],['x', 'x', 'x', 'x', 'x'],[83, 85, 97, 89, 57],[25, 31, 96, 68, 51],[75, 70, 54, 80, 83]])
  # board4 = BingoCheckerRefactored.new([[47, 44, 71, 'x', 88],[22, 69, 75, 'x', 73],[83, 85, 97, 'x', 57],[25, 31, 96, 'x', 51],[75, 70, 54, 'x', 83]])
@@ -309,4 +336,3 @@ end
  #  board4.check_board
 
  #30. AND BINGO WAS HIS NAME-O
- 
